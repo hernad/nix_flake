@@ -21,7 +21,7 @@ in
     };
 
     networking.hostName = "nomad";
-    networking.domain = "hoverbear.home";
+    networking.domain = "bringout.home";
   };
 }
 

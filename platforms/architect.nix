@@ -39,7 +39,7 @@ in
     nix.settings.builders = [ "@/etc/nix/machines" ];
 
     networking.hostName = "architect";
-    networking.domain = "hoverbear.home";
+    networking.domain = "bringout.home";
   };
 }
 
