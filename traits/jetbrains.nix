@@ -3,8 +3,9 @@
 {
   config = {
     environment.systemPackages = with pkgs; [
-      jetbrains.clion
-      jetbrains.datagrip
+      #jetbrains.clion
+      #jetbrains.datagrip
+      jetbrains.pycharm-professional
     ];
 
     # CLion requires cargo-xlib.
