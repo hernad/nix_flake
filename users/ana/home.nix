@@ -1,15 +1,15 @@
 { config, pkgs, lib, ... }:
 
 {
-  home.username = "ana";
-  home.homeDirectory = "/home/ana";
+  home.username = "hernad";
+  home.homeDirectory = "/home/hernad";
   home.sessionVariables.GTK_THEME = "palenight";
 
 
   programs.git = {
     enable = true;
-    userName = "Ana Hobden";
-    userEmail = "operator@hoverbear.org";
+    userName = "Ernad Husremovic";
+    userEmail = "hernad@bring.out.ba";
     extraConfig = {
       init = {
         defaultBranch = "main";

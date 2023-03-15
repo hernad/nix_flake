@@ -43,10 +43,10 @@ sudo nix run github:hoverbear-consulting/flake#unsafe-bootstrap
 
 ## Post-install
 
-After install, set the password for `ana`:
+After install, set the password for `hernad`:
 
 ```bash
-nix run nixpkgs#mkpasswd -- --stdin --method=sha-512 > /mnt/persist/encrypted-passwords/ana
+nix run nixpkgs#mkpasswd -- --stdin --method=sha-512 > /mnt/persist/encrypted-passwords/hernad
 ```
 
 ### Yubikeys

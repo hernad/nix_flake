@@ -68,10 +68,10 @@
             };
           in
           {
-            ana = home-manager.lib.homeManagerConfiguration {
+            hernad = home-manager.lib.homeManagerConfiguration {
               inherit pkgs;
               modules = [
-                ./users/ana/home.nix
+                ./users/hernad/home.nix
               ];
             };
           }
@@ -142,7 +142,7 @@
               traits.workstation
               traits.gnome
               traits.hardened
-              users.ana
+              users.hernad
             ];
           };
           architect = nixpkgs.lib.nixosSystem {
@@ -154,7 +154,7 @@
               traits.gnome
               traits.hardened
               traits.gaming
-              users.ana
+              users.hernad
             ];
           };
           nomad = nixpkgs.lib.nixosSystem {
@@ -165,7 +165,7 @@
               traits.workstation
               traits.gnome
               traits.hardened
-              users.ana
+              users.hernad
             ];
           };
           wsl = nixpkgs.lib.nixosSystem {
@@ -173,7 +173,7 @@
             modules = x86_64Base.modules ++ [
               nixos-wsl.nixosModules.wsl
               platforms.wsl
-              users.ana
+              users.hernad
             ];
           };
         };
@@ -199,7 +199,7 @@
         services.openssh = ./services/openssh.nix;
         # This trait is unfriendly to being bundled with platform-iso
         traits.workstation = ./traits/workstation.nix;
-        users.ana = ./users/ana;
+        users.hernad = ./users/hernad;
       };
 
       checks = forAllSystems (system:

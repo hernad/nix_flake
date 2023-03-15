@@ -3,8 +3,8 @@
 {
   config = {
     wsl.enable = true;
-    wsl.defaultUser = "ana";
+    wsl.defaultUser = "hernad";
     i18n.supportedLocales = [ "all" ];
-    i18n.defaultLocale = "en_CA.UTF-8";
+    i18n.defaultLocale = "bs_BA.UTF-8";
   };
 }
