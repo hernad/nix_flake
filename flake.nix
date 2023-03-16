@@ -133,6 +133,7 @@
               }
             ];
           };
+          
           lenovo16 = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
@@ -144,7 +145,7 @@
               traits.gaming
              users.hernad
             ];
-          }
+          };
         
           #gizmo = nixpkgs.lib.nixosSystem {
           #  inherit (aarch64Base) system;
