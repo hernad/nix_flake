@@ -57,6 +57,8 @@ sgdisk --zap-all "${TARGET_DEVICE}"
 
 partprobe "${TARGET_DEVICE}" || true
 
+gum style --bold --foreground "${RED}" "sgdisk partitioning ..."
+
 # efi part1
 #EFI System partition (ef00)
 sgdisk -n1:1M:+1G -t1:EF00 "${TARGET_DEVICE}"
@@ -83,10 +85,16 @@ sgdisk -a1 -n5:24K:+1000K -t5:EF02 "${TARGET_DEVICE}"
 
 partprobe "${TARGET_DEVICE}" || true
 
+
+gum style --bold --foreground "${RED}" "swap ..."
+
 # swap
 cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
 mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
 swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
+
+
+gum style --bold --foreground "${RED}" "zpool bpool ..."
 
 # zfs/solaris boot
 zpool create \
@@ -105,6 +113,8 @@ zpool create \
     bpool \
     "${TARGET_DEVICE}${PART}2"
 
+
+gum style --bold --foreground "${RED}" "zpool rpool ..."
 
 # zfs data partition
 zpool create \
@@ -129,6 +139,9 @@ zfs create \
    -o mountpoint=none \
    rpool/nixos
 
+
+
+gum style --bold --foreground "${RED}" "zfs rpool/nixos ..."
 
 # echo zfs ostali
 
@@ -175,6 +188,9 @@ mount -t zfs rpool/nixos/var/log /mnt/var/log
 zfs create -o mountpoint=legacy bpool/nixos/root
 mkdir -pv /mnt/boot
 mount -t zfs bpool/nixos/root /mnt/boot
+
+
+gum style --bold --foreground "${RED}" "mkfs efi ${TARGET_DEVICE}${PART}1  ..."
 
 # format and mount EFI partition
 mkfs.vfat -n EFI "${TARGET_DEVICE}${PART}1"
