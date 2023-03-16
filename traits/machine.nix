@@ -24,7 +24,7 @@
     #networking.hostId.source = "/persist/hostId";
 
     #boot.kernelPackages = pkgs.linuxPackages_latest;
-    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    boot.kernelPackages = boot.zfs.package.latestCompatibleLinuxPackages;
     boot.loader.efi.efiSysMountPoint = "/boot/efi";
     boot.loader.efi.canTouchEfiVariables = false;
     boot.loader.generationsDir.copyKernels = true;
