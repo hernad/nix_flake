@@ -40,7 +40,10 @@ in
       "/dev/${diskName}" 
     ];
 
-    networking.hostId = "len1690a";
+    # $ head -c4 /dev/urandom | od -A none -t x4
+    # da9793e5
+
+    networking.hostId = "da9793e5";
 
     # This doesn't seem to work...
     /* environment.etc."crypttab" = {
