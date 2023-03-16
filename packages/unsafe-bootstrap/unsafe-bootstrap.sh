@@ -53,35 +53,35 @@ umount -r /mnt || true
 umount -r "${TARGET_DEVICE}" || true
 
 
-sgdisk --zap-all ${TARGET_DEVICE}
+sgdisk --zap-all "${TARGET_DEVICE}"
 # efi part1
 #EFI System partition (ef00)
-sgdisk -n1:1M:+1G -t1:EF00 ${TARGET_DEVICE}
+sgdisk -n1:1M:+1G -t1:EF00 "${TARGET_DEVICE}"
 # boot part2
 # be00 Solaris boot  
-sgdisk -n2:0:+4G -t2:BE00 ${TARGET_DEVICE}
+sgdisk -n2:0:+4G -t2:BE00 "${TARGET_DEVICE}"
 
 # part4 - swap partition
 # 8200 Linux swap
-sgdisk -n4:0:+${INST_PARTSIZE_SWAP}G -t4:8200 ${TARGET_DEVICE}
+sgdisk "-n4:0:+${INST_PARTSIZE_SWAP}G" -t4:8200 "${TARGET_DEVICE}"
 
 # rpool part3 - zfs root/data partition
-if test -z ${INST_PARTSIZE_RPOOL}; then
-    sgdisk -n3:0:0 -t3:BF00 ${TARGET_DEVICE}
+if test -z "${INST_PARTSIZE_RPOOL}"; then
+    sgdisk -n3:0:0 -t3:BF00 "${TARGET_DEVICE}"
 else
-    sgdisk -n3:0:+${INST_PARTSIZE_RPOOL}G -t3:BF00 ${TARGET_DEVICE}
+    sgdisk "-n3:0:+${INST_PARTSIZE_RPOOL}G" -t3:BF00 "${TARGET_DEVICE}"
 fi
 
 # part5
 #BIOS Boot Partition (type code ef02)
-sgdisk -a1 -n5:24K:+1000K -t5:EF02 ${TARGET_DEVICE}
+sgdisk -a1 -n5:24K:+1000K -t5:EF02 "${TARGET_DEVICE}"
 
 sync && udevadm settle && sleep 3
 
 # swap
-cryptsetup open --type plain --key-file /dev/random ${TARGET_DEVICE}${PART}4 ${i##*/}${PART}4
-mkswap /dev/mapper/${i##*/}${PART}4
-swapon /dev/mapper/${i##*/}${PART}4
+cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
+mkswap "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
+swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
 
 # zfs/solaris boot
 zpool create \
@@ -98,7 +98,7 @@ zpool create \
     -O mountpoint=/boot \
     -R /mnt \
     bpool \
-    $(printf "${TARGET_DEVICE}${PART}2")
+    "${TARGET_DEVICE}${PART}2"
 
 
 # zfs data partition
@@ -115,7 +115,7 @@ zpool create \
     -O xattr=sa \
     -O mountpoint=/ \
     rpool \
-	$(printf "${TARGET_DEVICE}${PART}3")
+	"${TARGET_DEVICE}${PART}3"
 
 echo zfs rpool/nixos
 
@@ -172,13 +172,13 @@ mkdir -pv /mnt/boot
 mount -t zfs bpool/nixos/root /mnt/boot
 
 # format and mount EFI partition
-mkfs.vfat -n EFI ${TARGET_DEVICE}${PART}1
+mkfs.vfat -n EFI "${TARGET_DEVICE}${PART}1"
 
 #https://stackoverflow.com/questions/31307210/what-does-1-mean-in-bash
 # TARGET_DEVICE=/dev/sdb, ${TARGET_DEVICE##*/} => sdb
 
-mkdir -p /mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1
-mount -t vfat ${TARGET_DEVICE}${PART}1 /mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1
+mkdir -p "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
+mount -t vfat "${TARGET_DEVICE}${PART}1" "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
 
 #mkfs.vfat -F 32 "${EFI_PARTITION}"
 #mkdir -p /mnt/efi
