@@ -2,98 +2,64 @@
   Make a mount tree for adding to `fileSystems`
 
 */
-{ encryptedDeviceLabel, encryptedDevice, efiDevice }:
+{ efi, swap}:
 
 {
-  "/" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/" =
+    { device = "rpool/nixos/root";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
-    options = [
-      "subvol=root"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/home" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/home" =
+    { device = "rpool/nixos/home";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
-    options = [
-      "subvol=home"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/nix" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/var/lib" =
+    { device = "rpool/nixos/var/lib";
+      fsType = "zfs"; 
+      options = [ "zfsutil" "X-mount.mkdir" ];
     };
-    options = [
-      "subvol=nix"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/persist" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/var/log" =
+    { device = "rpool/nixos/var/log";
+      fsType = "zfs"; 
+      options = [ "zfsutil" "X-mount.mkdir" ];
     };
-    neededForBoot = true;
-    options = [
-      "subvol=persist"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/boot" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/boot" =
+    { 
+      device = "bpool/nixos/root";
+      fsType = "zfs"; 
+      options = [ "zfsutil" "X-mount.mkdir" ];
+      neededForBoot = true;
     };
-    neededForBoot = true;
-    options = [
-      "subvol=boot"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/var/log" = {
-    device = "/dev/mapper/${encryptedDeviceLabel}";
-    fsType = "btrfs";
-    encrypted = {
-      enable = true;
-      label = encryptedDeviceLabel;
-      blkDev = encryptedDevice;
+
+    "/persist" = {
+       device = "rpool/nixos/persist";
+       fsType = "zfs";
+       options = [ "zfsutil" "X-mount.mkdir" ];
     };
-    neededForBoot = true;
-    options = [
-      "subvol=log"
-      "compress=zstd"
-      "lazytime"
-    ];
-  };
-  "/efi" = {
-    device = efiDevice;
-    fsType = "vfat";
-  };
+
+    "/boot/efis/${efi}" = {
+      device = "/dev/${efi}";
+      fsType = "vfat";
+      options = [
+        "x-systemd.idle-timeout=1min"
+        "x-systemd.automount"
+        "noauto"
+        "nofail"
+      ];
+    };
+
+    "/boot/efi" =
+    { 
+      device = "/boot/efis/${efi}";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+
 }
+

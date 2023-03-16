@@ -133,41 +133,54 @@
               }
             ];
           };
-          gizmo = nixpkgs.lib.nixosSystem {
-            inherit (aarch64Base) system;
-            modules = aarch64Base.modules ++ [
-              platforms.gizmo
-              traits.honeycomb_lx2k
-              traits.machine
-              traits.workstation
-              traits.gnome
-              traits.hardened
-              users.hernad
-            ];
-          };
-          architect = nixpkgs.lib.nixosSystem {
+          lenovo16 = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
-              platforms.architect
+              platforms.lenovo16
               traits.machine
               traits.workstation
               traits.gnome
               traits.hardened
               traits.gaming
-              users.hernad
+             users.hernad
             ];
-          };
-          nomad = nixpkgs.lib.nixosSystem {
-            inherit (x86_64Base) system;
-            modules = x86_64Base.modules ++ [
-              platforms.nomad
-              traits.machine
-              traits.workstation
-              traits.gnome
-              traits.hardened
-              users.hernad
-            ];
-          };
+          }
+        
+          #gizmo = nixpkgs.lib.nixosSystem {
+          #  inherit (aarch64Base) system;
+          #  modules = aarch64Base.modules ++ [
+          #    platforms.gizmo
+          #    traits.honeycomb_lx2k
+          #    traits.machine
+          #    traits.workstation
+          #    traits.gnome
+          #    traits.hardened
+          #    users.hernad
+          #  ];
+          #};
+          #architect = nixpkgs.lib.nixosSystem {
+          #  inherit (x86_64Base) system;
+          #  modules = x86_64Base.modules ++ [
+          #    platforms.architect
+          #    traits.machine
+          #    traits.workstation
+          #    traits.gnome
+          #    traits.hardened
+          #    traits.gaming
+          #    users.hernad
+          #  ];
+          #};
+          #nomad = nixpkgs.lib.nixosSystem {
+          #  inherit (x86_64Base) system;
+          #  modules = x86_64Base.modules ++ [
+          #    platforms.nomad
+          #    traits.machine
+          #    traits.workstation
+          #    traits.gnome
+          #    traits.hardened
+          #    users.hernad
+          #  ];
+          #};
           wsl = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
@@ -181,9 +194,10 @@
       nixosModules = {
         platforms.container = ./platforms/container.nix;
         platforms.wsl = ./platforms/wsl.nix;
-        platforms.gizmo = ./platforms/gizmo.nix;
-        platforms.architect = ./platforms/architect.nix;
-        platforms.nomad = ./platforms/nomad.nix;
+        #platforms.gizmo = ./platforms/gizmo.nix;
+        #platforms.architect = ./platforms/architect.nix;
+        #platforms.nomad = ./platforms/nomad.nix;
+        platforms.lenovo16 = ./platforms/lenovo16.nix;
         platforms.iso-minimal = "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
         platforms.iso = "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix";
         traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };

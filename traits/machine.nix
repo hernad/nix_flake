@@ -20,10 +20,40 @@
       "i2c-dev"
       "i2c-piix"
     ];
-    boot.kernelPackages = pkgs.linuxPackages_latest;
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.systemd-boot.editor = true;
-    boot.loader.efi.efiSysMountPoint = "/efi";
+    boot.supportedFilesystems = [ "zfs" ];
+    #networking.hostId.source = "/persist/hostId";
+
+    #boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    boot.loader.efi.canTouchEfiVariables = false;
+    boot.loader.generationsDir.copyKernels = true;
+    boot.loader.grub.efiInstallAsRemovable = true;
+    boot.loader.grub.enable = true;
+    boot.loader.grub.version = 2;
+    boot.loader.grub.copyKernels = true;
+    boot.loader.grub.efiSupport = true;
+    boot.loader.grub.zfsSupport = true;
+    boot.loader.grub.extraPrepareConfig = ''
+      mkdir -p /boot/efis
+      for i in  /boot/efis/*; do mount $i ; done
+
+      mkdir -p /boot/efi
+      mount /boot/efi
+    '';
+    boot.loader.grub.extraInstallCommands = ''
+      ESP_MIRROR=$(mktemp -d)
+      cp -r /boot/efi/EFI $ESP_MIRROR
+      for i in /boot/efis/*; do
+        cp -r $ESP_MIRROR/EFI $i
+      done
+      rm -rf $ESP_MIRROR
+    '';
+    #boot.loader.grub.devices = [
+    #  "/dev/nvme0n1" 
+    #];
+
+
     boot.binfmt.emulatedSystems = (if pkgs.stdenv.isx86_64 then [
       "aarch64-linux"
     ] else if pkgs.stdenv.isAarch64 then [
@@ -63,7 +93,7 @@
       pulse.enable = true;
     };
     
-    services.tailscale.enable = true;
+    #services.tailscale.enable = true;
 
     security.rtkit.enable = true;
 
@@ -99,45 +129,46 @@
       "L /etc/secrets - - - - /persist/secrets"
       #"L /var/lib/bluetooth - - - - /persist/var/lib/bluetooth"
     ];
-    boot.initrd.postDeviceCommands = pkgs.lib.mkBefore ''
-      mkdir -p /mnt
+    #boot.initrd.postDeviceCommands = pkgs.lib.mkBefore ''
+    #  mkdir -p /mnt
+    #
+    #  # We first mount the btrfs root to /mnt
+    #  # so we can manipulate btrfs subvolumes.
+    #  mount -o subvol=/ /dev/mapper/encrypt /mnt
+    #
+    #  # While we're tempted to just delete /root and create
+    #  # a new snapshot from /root-blank, /root is already
+    #  # populated at this point with a number of subvolumes,
+    #  # which makes `btrfs subvolume delete` fail.
+    #  # So, we remove them first.
+    #  #
+    #  # /root contains subvolumes:
+    #  # - /root/var/lib/portables
+    #  # - /root/var/lib/machines
+    #  #
+    #  # I suspect these are related to systemd-nspawn, but
+    #  # since I don't use it I'm not 100% sure.
+    #  # Anyhow, deleting these subvolumes hasn't resulted
+    #  # in any issues so far, except for fairly
+    #  # benign-looking errors from systemd-tmpfiles.
+    #
+    #  btrfs subvolume list -o /mnt/root |
+    #  cut -f9 -d' ' |
+    #  while read subvolume; do
+    #    echo "deleting /$subvolume subvolume..."
+    #    btrfs subvolume delete "/mnt/$subvolume"
+    #  done &&
+    #  echo "deleting /root subvolume..." &&
+    #  btrfs subvolume delete /mnt/root
+    #
+    #  echo "restoring blank /root subvolume..."
+    #  btrfs subvolume snapshot /mnt/snapshots/root/blank /mnt/root
+    #
+    #  # Once we're done rolling back to a blank snapshot,
+    #  # we can unmount /mnt and continue on the boot process.
+    #  umount /mnt
+    #'';
 
-      # We first mount the btrfs root to /mnt
-      # so we can manipulate btrfs subvolumes.
-      mount -o subvol=/ /dev/mapper/encrypt /mnt
-
-      # While we're tempted to just delete /root and create
-      # a new snapshot from /root-blank, /root is already
-      # populated at this point with a number of subvolumes,
-      # which makes `btrfs subvolume delete` fail.
-      # So, we remove them first.
-      #
-      # /root contains subvolumes:
-      # - /root/var/lib/portables
-      # - /root/var/lib/machines
-      #
-      # I suspect these are related to systemd-nspawn, but
-      # since I don't use it I'm not 100% sure.
-      # Anyhow, deleting these subvolumes hasn't resulted
-      # in any issues so far, except for fairly
-      # benign-looking errors from systemd-tmpfiles.
-
-      btrfs subvolume list -o /mnt/root |
-      cut -f9 -d' ' |
-      while read subvolume; do
-        echo "deleting /$subvolume subvolume..."
-        btrfs subvolume delete "/mnt/$subvolume"
-      done &&
-      echo "deleting /root subvolume..." &&
-      btrfs subvolume delete /mnt/root
-
-      echo "restoring blank /root subvolume..."
-      btrfs subvolume snapshot /mnt/snapshots/root/blank /mnt/root
-
-      # Once we're done rolling back to a blank snapshot,
-      # we can unmount /mnt and continue on the boot process.
-      umount /mnt
-    '';
-    swapDevices = [ ];
+    #swapDevices = [ ];
   };
 }
