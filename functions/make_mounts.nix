@@ -2,7 +2,7 @@
   Make a mount tree for adding to `fileSystems`
 
 */
-{ efi, swap}:
+{ efi }:
 
 {
 
