@@ -31,9 +31,6 @@ This will irrevocably destroy all data on \`TARGET_DEVICE=${TARGET_DEVICE-/dev/n
 
 An FAT32 EFI system partition will be created as the first partition.
 
-An ZFS partition will be created as the second partition.
-Expected as: \`ROOT_PARITION=${ROOT_PARTITION-/dev/null}\`
-
 Several zpools will be created, then mounted on \`/mnt\`.
 
 Several files will be created in the \`persist\` subvolume.
@@ -52,7 +49,9 @@ gum style --bold --foreground "${RED}" "Let's gooooo!!!"
 umount -r /mnt || true
 umount -r "${TARGET_DEVICE}" || true
 
+cryptsetup close "${TARGET_DEVICE}${PART}4" || true
 
+wipefs -af "${TARGET_DEVICE}" || true
 sgdisk --zap-all "${TARGET_DEVICE}"
 
 partprobe  || true
