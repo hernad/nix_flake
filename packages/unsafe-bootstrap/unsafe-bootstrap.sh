@@ -49,6 +49,7 @@ gum style --bold --foreground "${RED}" "Let's gooooo!!!"
 umount -r /mnt || true
 umount -r "${TARGET_DEVICE}" || true
 
+swapoff "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
 cryptsetup close "${TARGET_DEVICE}${PART}4" || true
 
 wipefs -af "${TARGET_DEVICE}" || true
