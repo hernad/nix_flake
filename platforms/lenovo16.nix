@@ -12,8 +12,7 @@ in
     # "${modulesPath}/profiles/qemu-guest.nix"
   ];
 
-  systemd.services.zfs-mount.enable = false;
-
+  
   config = {
     boot.kernelParams = [ "amd_iommu=on" "iommu=pt" "iommu=1" "rd.driver.pre=vfio-pci" ];
     boot.initrd.kernelModules = [ "amdgpu" ];
@@ -26,6 +25,8 @@ in
     services.xserver.videoDrivers = [ "amdgpu" ];
 
     hardware.cpu.amd.updateMicrocode = true;
+    systemd.services.zfs-mount.enable = false;
+
 
     fileSystems = makeMounts {
       inherit efi;
