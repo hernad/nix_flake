@@ -85,8 +85,8 @@ partprobe || true
 
 # swap
 cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
-mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
-swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
+mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
+swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
 
 # zfs/solaris boot
 zpool create \
