@@ -80,7 +80,7 @@ sync && udevadm settle && sleep 3
 
 # swap
 cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
-mkswap "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
+mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
 swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
 
 # zfs/solaris boot
