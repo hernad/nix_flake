@@ -81,6 +81,8 @@ sgdisk -a1 -n5:24K:+1000K -t5:EF02 "${TARGET_DEVICE}"
 
 sync && udevadm settle && sleep 3
 
+partprobe || true
+
 # swap
 cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
 mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4"
