@@ -50,7 +50,7 @@ umount -r /mnt || true
 umount -r "${TARGET_DEVICE}" || true
 
 swapoff "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
-cryptsetup close "${TARGET_DEVICE}${PART}4" || true
+cryptsetup close "${TARGET_DEVICE##*/}${PART}4" || true
 
 wipefs -af "${TARGET_DEVICE}" || true
 sgdisk --zap-all "${TARGET_DEVICE}"
