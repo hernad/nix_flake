@@ -66,7 +66,7 @@ sgdisk -n2:0:+4G -t2:BE00 "${TARGET_DEVICE}"
 
 # part4 - swap partition
 # 8200 Linux swap
-sgdisk "-n4:0:+${INST_PARTSIZE_SWAP}G" -t4:8200 "${TARGET_DEVICE}"
+sgdisk "-n4:0:+${INST_PARTSIZE_SWAP}G" -t4:8200 "${TARGET_DEVICE}" || true
 
 # rpool part3 - zfs root/data partition
 if test -z "${INST_PARTSIZE_RPOOL}"; then
