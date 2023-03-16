@@ -54,6 +54,9 @@ umount -r "${TARGET_DEVICE}" || true
 
 
 sgdisk --zap-all "${TARGET_DEVICE}"
+
+partprobe  || true
+
 # efi part1
 #EFI System partition (ef00)
 sgdisk -n1:1M:+1G -t1:EF00 "${TARGET_DEVICE}"
