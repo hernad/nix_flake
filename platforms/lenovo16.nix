@@ -12,6 +12,8 @@ in
     # "${modulesPath}/profiles/qemu-guest.nix"
   ];
 
+  systemd.services.zfs-mount.enable = false;
+
   config = {
     boot.kernelParams = [ "amd_iommu=on" "iommu=pt" "iommu=1" "rd.driver.pre=vfio-pci" ];
     boot.initrd.kernelModules = [ "amdgpu" ];
