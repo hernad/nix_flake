@@ -33,7 +33,7 @@ An FAT32 EFI system partition will be created as the first partition.
 
 Several zpools will be created, then mounted on \`/mnt\`.
 
-Several files will be created in the \`persist\` subvolume.
+Several files will be created in the \`persist\` zfs dataset.
 
 This script will not install NixOS, but you will be able to run \`nixos-install\` immediately after.
 
@@ -55,7 +55,7 @@ cryptsetup close "${TARGET_DEVICE}${PART}4" || true
 wipefs -af "${TARGET_DEVICE}" || true
 sgdisk --zap-all "${TARGET_DEVICE}"
 
-partprobe  || true
+partprobe "${TARGET_DEVICE}" || true
 
 # efi part1
 #EFI System partition (ef00)
@@ -79,9 +79,9 @@ fi
 #BIOS Boot Partition (type code ef02)
 sgdisk -a1 -n5:24K:+1000K -t5:EF02 "${TARGET_DEVICE}"
 
-sync && udevadm settle && sleep 3
+#sync && udevadm settle && sleep 3
 
-partprobe || true
+partprobe "${TARGET_DEVICE}" || true
 
 # swap
 cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
