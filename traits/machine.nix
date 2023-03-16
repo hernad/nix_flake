@@ -13,6 +13,15 @@
       "usb_storage"
       "nbd"
       "nvme"
+      "ahci"
+      "xhci_pci"
+      "virtio_pci"
+      "virtio_blk"
+      "ehci_pci"
+      "uas"
+      "sd_mod"
+      "sr_mod"
+      "sdhci_pci"
     ];
     boot.kernelModules = [
       "coretemp"

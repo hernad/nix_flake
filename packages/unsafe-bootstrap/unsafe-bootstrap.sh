@@ -141,9 +141,9 @@ if [ "$INST_MOUNT_ONLY" != "y" ] ; then
     echo zfs rpool/nixos
 
     zfs create \
-    -o canmount=off \
-    -o mountpoint=none \
-    rpool/nixos
+      -o canmount=off \
+      -o mountpoint=none \
+      rpool/nixos
 
 
     gum style --bold --foreground "${RED}" "zfs rpool/nixos ..."
@@ -159,8 +159,7 @@ if [ "$INST_MOUNT_ONLY" != "y" ] ; then
 
     zfs create -o mountpoint=legacy rpool/nixos/var
     zfs create -o mountpoint=legacy rpool/nixos/var/lib
-    zfs create -o mountpoint=none bpool/nixos
-
+    
     zfs create -o mountpoint=legacy rpool/nixos/empty
     zfs snapshot rpool/nixos/empty@start
 
@@ -190,6 +189,8 @@ if [ "$INST_MOUNT_ONLY" != "y" ] ; then
 
     #mkdir -pv /mnt/boot
     #mount -o subvol=boot,compress=zstd,lazytime /dev/mapper/encrypt /mnt/boot
+    
+    zfs create -o mountpoint=none bpool/nixos
     zfs create -o mountpoint=legacy bpool/nixos/root
     mkdir -pv /mnt/boot
     mount -t zfs bpool/nixos/root /mnt/boot

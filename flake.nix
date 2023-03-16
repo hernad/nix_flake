@@ -137,8 +137,8 @@
           lenovo16 = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
-              platforms.lenovo16
               traits.machine
+              platforms.lenovo16
               traits.workstation
               traits.gnome
               traits.hardened
