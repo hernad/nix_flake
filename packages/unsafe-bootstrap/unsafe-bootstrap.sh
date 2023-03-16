@@ -97,7 +97,7 @@ swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
 gum style --bold --foreground "${RED}" "zpool bpool ..."
 
 # zfs/solaris boot
-zpool -f create \
+zpool create -f \
     -o compatibility=grub2 \
     -o ashift=12 \
     -o autotrim=on \
@@ -117,7 +117,7 @@ zpool -f create \
 gum style --bold --foreground "${RED}" "zpool rpool ..."
 
 # zfs data partition
-zpool -f create \
+zpool create -f \
     -o ashift=12 \
     -o autotrim=on \
     -R /mnt \
