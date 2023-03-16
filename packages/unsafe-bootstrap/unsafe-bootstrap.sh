@@ -4,6 +4,9 @@ BLUE=34
 CYAN=36
 RED=31
 
+#PART=-part
+PART=p
+
 lsblk -o name,mountpoint,size,uuid,vendor
 
 if test -z "${TARGET_DEVICE-}"; then
@@ -76,9 +79,9 @@ sgdisk -a1 -n5:24K:+1000K -t5:EF02 ${TARGET_DEVICE}
 sync && udevadm settle && sleep 3
 
 # swap
-cryptsetup open --type plain --key-file /dev/random ${TARGET_DEVICE}-part4 ${i##*/}-part4
-mkswap /dev/mapper/${i##*/}-part4
-swapon /dev/mapper/${i##*/}-part4
+cryptsetup open --type plain --key-file /dev/random ${TARGET_DEVICE}${PART}4 ${i##*/}${PART}4
+mkswap /dev/mapper/${i##*/}${PART}4
+swapon /dev/mapper/${i##*/}${PART}4
 
 # zfs/solaris boot
 zpool create \
@@ -95,7 +98,7 @@ zpool create \
     -O mountpoint=/boot \
     -R /mnt \
     bpool \
-    $(printf "${TARGET_DEVICE}-part2")
+    $(printf "${TARGET_DEVICE}${PART}2")
 
 
 # zfs data partition
@@ -112,7 +115,7 @@ zpool create \
     -O xattr=sa \
     -O mountpoint=/ \
     rpool \
-	$(printf "${TARGET_DEVICE}-part3")
+	$(printf "${TARGET_DEVICE}${PART}3")
 
 echo zfs rpool/nixos
 
@@ -169,13 +172,13 @@ mkdir -pv /mnt/boot
 mount -t zfs bpool/nixos/root /mnt/boot
 
 # format and mount EFI partition
-mkfs.vfat -n EFI ${TARGET_DEVICE}-part1
+mkfs.vfat -n EFI ${TARGET_DEVICE}${PART}1
 
 #https://stackoverflow.com/questions/31307210/what-does-1-mean-in-bash
 # TARGET_DEVICE=/dev/sdb, ${TARGET_DEVICE##*/} => sdb
 
-mkdir -p /mnt/boot/efis/${TARGET_DEVICE##*/}-part1
-mount -t vfat ${TARGET_DEVICE}-part1 /mnt/boot/efis/${TARGET_DEVICE##*/}-part1
+mkdir -p /mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1
+mount -t vfat ${TARGET_DEVICE}${PART}1 /mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1
 
 #mkfs.vfat -F 32 "${EFI_PARTITION}"
 #mkdir -p /mnt/efi
