@@ -20,8 +20,8 @@
   gtk = {
     enable = true;
     iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      name = "Moka";
+      package = pkgs.moka-icon-theme;
     };
     theme = {
       name = "yaru";
