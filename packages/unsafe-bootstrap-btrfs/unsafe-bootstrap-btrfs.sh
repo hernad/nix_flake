@@ -75,17 +75,17 @@ btrfs subvolume create /mnt/boot
 mkdir -p /mnt/snapshots/root/
 btrfs subvolume snapshot -r /mnt/root /mnt/snapshots/root/blank
 umount -R /mnt
-mount -o subvol=root,compress=zstd,lazytime /dev/mapper/encrypt /mnt
+mount -o subvol=root,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt
 mkdir -pv /mnt/home
-mount -o subvol=home,compress=zstd,lazytime /dev/mapper/encrypt /mnt/home
+mount -o subvol=home,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/home
 mkdir -pv /mnt/nix
-mount -o subvol=nix,compress=zstd,lazytime /dev/mapper/encrypt /mnt/nix
+mount -o subvol=nix,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/nix
 mkdir -pv /mnt/persist
-mount -o subvol=persist,compress=zstd,lazytime /dev/mapper/encrypt /mnt/persist
+mount -o subvol=persist,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/persist
 mkdir -pv /mnt/var/log
-mount -o subvol=log,compress=zstd,lazytime /dev/mapper/encrypt /mnt/var/log
+mount -o subvol=log,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/var/log
 mkdir -pv /mnt/boot
-mount -o subvol=boot,compress=zstd,lazytime /dev/mapper/encrypt /mnt/boot
+mount -o subvol=boot,compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/boot
 
 mkfs.vfat -F 32 "${EFI_PARTITION}"
 mkdir -p /mnt/efi
