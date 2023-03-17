@@ -192,9 +192,9 @@
 
   lib.mkForce { 
     xdg.configFile."Code/User/settings.json".source =  config.lib.file.mkOutOfStoreSymlink
-         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json" };
+         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
   };
-  
+
   programs.fish.enable = true;
   programs.fish.shellInit = ''
     function fish_greeting
