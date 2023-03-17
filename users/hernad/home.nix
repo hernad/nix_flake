@@ -140,9 +140,9 @@
           after = [ "writeBoundary" ];
           before = [ ];
           data = ''
-            mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings_orig.json
-            cp -Lr ~/.config/Code/User/settings_orig.json ~/.config/Code/User/settings.json
-            chmod +w ~/.config/Code/User/settings.json
+            mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings_orig.json || true
+            cp -Lr ~/.config/Code/User/settings_orig.json ~/.config/Code/User/settings.json || trie
+            chmod +w ~/.config/Code/User/settings.json || true
           '';
         };
   };
