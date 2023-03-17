@@ -22,27 +22,6 @@ fi
 echo "Got \`$(gum style --foreground ${BLUE} "ROOT_PARTITION")=$(gum style --foreground ${CYAN} "${ROOT_PARTITION}")\`"
 
 
-gum style "
-This will irrevocably destroy all data on \`TARGET_DEVICE=${TARGET_DEVICE-/dev/null}\`!!!
-
-An FAT32 EFI system partition will be created as the first partition.
-Expected as: \`EFI_PARTITION=${EFI_PARTITION-/dev/null}\`
-
-An encrypted BTRFS partition will be created as the second partition.
-Expected as: \`ROOT_PARTITION=${ROOT_PARTITION-/dev/null}\`
-
-You will be prompted to set encrypted disk passwords.
-
-Several BTRFS subvolumes will be created, then mounted on \`/mnt\`.
-
-Several files will be created in the \`persist\` subvolume.
-
-This script will not install NixOS, but you will be able to run \`nixos-install\` immediately after.
-
-This process is highly experimental and will absolutely toss your machine into the rubbish bin."
-
-gum confirm "Are you ready to have a really bad time?" || (echo "Okay! Then, toodles!" && exit 1)
-
 
 umount -r /mnt || true
 umount -r "${TARGET_DEVICE}" || true

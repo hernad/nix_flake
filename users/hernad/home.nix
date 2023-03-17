@@ -105,6 +105,7 @@
     fix-vscode
     asciinema
     agg
+    libreoffice
   ] ++ (if stdenv.isx86_64 then [
     # kicad
     chromium
