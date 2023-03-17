@@ -135,7 +135,20 @@
     spotifyd
   ] else [ ]);
 
-
+  home.activation = {
+        afterWriteBoundary = {
+          after = [ "writeBoundary" ];
+          before = [ ];
+          data = ''
+            find ~/.config/Code | while read -r path
+            do
+              $DRY_RUN_CMD chmod --recursive +w \
+                "$(readlink --canonicalize "$path")"
+            done
+          '';
+        };
+  };
+ 
   
 
   programs.vscode = {
@@ -194,20 +207,8 @@
   #xdg.configFile."Code/User/settings.json".source = lib.mkForce config.lib.file.mkOutOfStoreSymlink
   #       "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
 
-  activation = {
-        afterWriteBoundary = {
-          after = [ "writeBoundary" ];
-          before = [ ];
-          data = ''
-            find ~/.config/Code | while read -r path
-            do
-              $DRY_RUN_CMD chmod --recursive +w \
-                "$(readlink --canonicalize "$path")"
-            done
-          '';
-        };
-  };
-
+ 
+  
   programs.fish.enable = true;
   programs.fish.shellInit = ''
     function fish_greeting

@@ -6,6 +6,7 @@
     users.users.hernad = {
       isNormalUser = true;
       home = "/home/hernad";
+      
       createHome = true;
       passwordFile = "/persist/encrypted-passwords/hernad";
       shell = pkgs.fish;
