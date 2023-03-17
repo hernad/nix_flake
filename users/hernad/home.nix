@@ -138,9 +138,6 @@
 
   # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
 
-  xdg.configFile."Code/User/settings.json".source =
-         config.lib.file.mkOutOfStoreSymlink
-         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
 
   programs.vscode = {
     enable = true;
@@ -192,6 +189,10 @@
       ms-vscode.cpptools
     ] else [ ]);
   };
+
+  xdg.configFile."Code/User/settings.json".source = lib.mkForce
+         config.lib.file.mkOutOfStoreSymlink
+         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
 
   programs.fish.enable = true;
   programs.fish.shellInit = ''
