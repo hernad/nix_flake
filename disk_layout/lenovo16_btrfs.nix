@@ -1,8 +1,8 @@
 {
   diskPart = {  
      diskName = "nvme0n1";  
-     efi = "${diskName}p1";
-     root = "${diskName}p2";
-     #swap = "${diskName}p3";
+     efi = "nvme0n1p1";
+     root = "nvme0n1p2";
+     #swap = "nvme0n1p3";
   };   
 }
