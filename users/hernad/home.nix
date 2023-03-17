@@ -162,6 +162,7 @@
       "remote.SSH.useLocalServer" = false;
       "editor.fontSize" = 18;
       "editor.formatOnSave" = true;
+      "workbench.startupEditor" = "none";
     };
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
