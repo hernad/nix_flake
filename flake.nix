@@ -138,7 +138,7 @@
           lenovo16 = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
-              traits.machine
+              traits.machine_zfs
               platforms.lenovo16
               traits.workstation
               traits.gnome
@@ -151,7 +151,7 @@
           lenovo16b = nixpkgs.lib.nixosSystem {
             inherit (x86_64Base) system;
             modules = x86_64Base.modules ++ [
-              traits.machine
+              traits.machine_btrfs
               platforms.lenovo16b
               traits.workstation
               traits.gnome
@@ -216,7 +216,8 @@
         platforms.iso = "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix";
         traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
         traits.base = ./traits/base.nix;
-        traits.machine = ./traits/machine.nix;
+        traits.machine_btrfs = ./traits/machine_btrfs.nix;
+        traits.machine_zfs = ./traits/machine_zfs.nix;
         traits.gaming = ./traits/gaming.nix;
         traits.gnome = ./traits/gnome.nix;
         traits.jetbrains = ./traits/jetbrains.nix;
