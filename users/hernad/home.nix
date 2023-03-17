@@ -140,10 +140,10 @@
           after = [ "writeBoundary" ];
           before = [ ];
           data = ''
-            rm ~/.config/Code/User/settings_orig.json || true
-            mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings_orig.json || true
-            cp -Lr ~/.config/Code/User/settings_orig.json ~/.config/Code/User/settings.json || true
-            chmod +w ~/.config/Code/User/settings.json || true
+            #rm ~/.config/Code/User/settings_orig.json || true
+            #mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings_orig.json || true
+            #cp -Lr ~/.config/Code/User/settings_orig.json ~/.config/Code/User/settings.json || true
+            #chmod +w ~/.config/Code/User/settings.json || true
           '';
         };
   };
