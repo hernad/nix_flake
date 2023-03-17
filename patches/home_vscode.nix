@@ -1,17 +1,10 @@
+{ config, pkgs, lib, ... }:
+
 {
     home = {
-      activation = {
-        afterWriteBoundary = {
-          after = [ "writeBoundary" ];
-          before = [ ];
-          data = ''
-            find ~/.config/Code | while read -r path
-            do
-              $DRY_RUN_CMD chmod --recursive +w \
-                "$(readlink --canonicalize "$path")"
-            done
-          '';
-        };
-      };
+      xdg.configFile."Code/User/settings.json".source =
+         config.lib.file.mkOutOfStoreSymlink
+         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
+      
   };
 }
