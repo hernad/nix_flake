@@ -140,11 +140,9 @@
           after = [ "writeBoundary" ];
           before = [ ];
           data = ''
-            find ~/.config/Code | while read -r path
-            do
-              $DRY_RUN_CMD sudo chmod --recursive +w \
-                "$(readlink --canonicalize "$path")"
-            done
+            mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings_orig.json
+            cp -Lr ~/.config/Code/User/settings_orig.json ~/.config/Code/User/settings.json
+            chmod +w ~/.config/Code/User/settings.json
           '';
         };
   };
