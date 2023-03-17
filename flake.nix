@@ -74,6 +74,7 @@
               inherit pkgs;
               modules = [
                 ./users/hernad/home.nix
+                ./patches/home_vscode.nix
               ];
             };
           }

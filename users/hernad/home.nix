@@ -137,7 +137,7 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscode;
+    package = pkgs.vscode.fhs;
     userSettings = {
       "workbench.colorTheme" = "Palenight Operator";
       "terminal.integrated.scrollback" = 10000;
