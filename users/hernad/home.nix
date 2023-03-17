@@ -57,7 +57,17 @@
         # "sound-output-device-chooser@kgshank.net"
         "space-bar@luchrioh"
       ];
-      favorite-apps = [ "firefox.desktop" "code.desktop" "org.gnome.Terminal.desktop" "spotify.desktop" "virt-manager.desktop" "org.gnome.Nautilus.desktop" ];
+      favorite-apps = [ 
+        "firefox.desktop" 
+        "code.desktop" 
+        #"org.gnome.Terminal.desktop" 
+        #"spotify.desktop" 
+        "virt-manager.desktop" 
+        "org.gnome.Nautilus.desktop"
+        "fish.desktop"
+        "calc.desktop"
+        "writer.desktop"
+        ];
     };
     "org/gnome/desktop/interface" = {
       #color-scheme = "prefer-dark";
