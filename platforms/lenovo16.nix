@@ -4,7 +4,7 @@ let
   diskName = "nvme0n1";
   efi = "${diskName}p1";
   swap = "${diskName}p5";
-  makeMounts = import ./../functions/make_mounts.nix;
+  makeMounts = import ./../functions/make_mounts_zfs.nix;
 in
 {
   imports = [
