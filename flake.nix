@@ -212,6 +212,7 @@
         #platforms.architect = ./platforms/architect.nix;
         #platforms.nomad = ./platforms/nomad.nix;
         platforms.lenovo16 = ./platforms/lenovo16.nix;
+        platforms.lenovo16b = ./platforms/lenovo16b.nix;
         platforms.iso-minimal = "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
         platforms.iso = "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix";
         traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
