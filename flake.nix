@@ -76,7 +76,6 @@
               # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
               modules = [
                 ./users/hernad/home.nix
-                ./patches/home_vscode.nix
               ];
             };
           }

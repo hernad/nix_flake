@@ -5,7 +5,7 @@
   home.homeDirectory = "/home/hernad";
   home.sessionVariables.GTK_THEME = "yaru";
 
-
+   
   programs.git = {
     enable = true;
     userName = "Ernad Husremovic";
@@ -135,6 +135,13 @@
     spotifyd
   ] else [ ]);
 
+
+  # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
+
+  xdg.configFile."Code/User/settings.json".source =
+         config.lib.file.mkOutOfStoreSymlink
+         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
+
   programs.vscode = {
     enable = true;
     package = pkgs.vscode.fhs;
@@ -160,6 +167,7 @@
       usernamehw.errorlens
       vadimcn.vscode-lldb
       bungcip.better-toml
+      msjsdiag.debugger-for-chrome
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "material-palenight-theme";
