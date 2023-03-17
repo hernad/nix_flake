@@ -117,9 +117,11 @@
     asciinema
     agg
     libreoffice
+    dbeaver
+    google-chrome
   ] ++ (if stdenv.isx86_64 then [
     # kicad
-    chromium
+    #chromium
     spotify
     obs-studio
     obs-studio-plugins.obs-gstreamer
