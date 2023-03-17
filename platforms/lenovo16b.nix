@@ -34,16 +34,18 @@ in
       inherit efiDev rootDev;
     };
 
-    swapDevices = [
-      {
-        device = "/dev/${swap}";
-        discardPolicy = "both";
-        randomEncryption = {
-          enable = true;
-          allowDiscards = true;
-        };
-      }
-    ];
+    #swapDevices = [
+    #  {
+    #    device = "/dev/${swap}";
+    #    discardPolicy = "both";
+    #    randomEncryption = {
+    #      enable = true;
+    #      allowDiscards = true;
+    #    };
+    #  }
+    #];
+
+    swapDevices = [];
 
     #boot.loader.grub.devices = [
     #  "/dev/${diskName}" 
