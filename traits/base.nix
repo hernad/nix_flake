@@ -9,7 +9,7 @@
     # Windows wants hardware clock in local time instead of UTC
     time.hardwareClockInLocalTime = true;
 
-    i18n.defaultLocale = "bs_BA.UTF-8";
+    i18n.defaultLocale = "en_US.UTF-8";
     i18n.supportedLocales = [ "all" ];
 
     environment.systemPackages = with pkgs; [
