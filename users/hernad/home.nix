@@ -3,7 +3,7 @@
 {
   home.username = "hernad";
   home.homeDirectory = "/home/hernad";
-  home.sessionVariables.GTK_THEME = "palenight";
+  home.sessionVariables.GTK_THEME = "yaru";
 
 
   programs.git = {
@@ -24,8 +24,8 @@
       package = pkgs.papirus-icon-theme;
     };
     theme = {
-      name = "palenight";
-      package = pkgs.palenight-theme;
+      name = "yaru";
+      package = pkgs.yaru-theme;
     };
     cursorTheme = {
       name = "Numix-Cursor";
@@ -33,12 +33,12 @@
     };
     gtk3.extraConfig = {
       Settings = ''
-        gtk-application-prefer-dark-theme=1
+        gtk-application-prefer-dark-theme=0
       '';
     };
     gtk4.extraConfig = {
       Settings = ''
-        gtk-application-prefer-dark-theme=1
+        gtk-application-prefer-dark-theme=0
       '';
     };
   };
@@ -65,7 +65,7 @@
     };
     # `gsettings get org.gnome.shell.extensions.user-theme name`
     "org/gnome/shell/extensions/user-theme" = {
-      name = "palenight";
+      name = "yaru";
     };
     "org/gnome/desktop/wm/preferences" = {
       workspace-names = [ "Main" ];
