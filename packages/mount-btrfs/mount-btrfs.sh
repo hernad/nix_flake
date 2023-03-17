@@ -2,7 +2,7 @@ set -e
 
 BLUE=34
 CYAN=36
-RED=31
+
 
 lsblk -o name,mountpoint,size,uuid,vendor
 
