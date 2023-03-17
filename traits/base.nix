@@ -18,6 +18,7 @@
       direnv
       nix-direnv
       git
+      python310
       jq
       fzf
       ripgrep
