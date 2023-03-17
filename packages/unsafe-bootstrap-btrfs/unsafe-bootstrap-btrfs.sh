@@ -29,7 +29,7 @@ An FAT32 EFI system partition will be created as the first partition.
 Expected as: \`EFI_PARTITION=${EFI_PARTITION-/dev/null}\`
 
 An encrypted BTRFS partition will be created as the second partition.
-Expected as: \`ROOT_PARITION=${ROOT_PARTITION-/dev/null}\`
+Expected as: \`ROOT_PARTITION=${ROOT_PARTITION-/dev/null}\`
 
 You will be prompted to set encrypted disk passwords.
 
@@ -64,8 +64,8 @@ sgdisk "${TARGET_DEVICE}" -n 2:0:0
 sgdisk "${TARGET_DEVICE}" -t 2:8309
 
 
-mkfs.btrfs --label tree "${ROOT_PARITION}"
-mount -o compress=zstd,lazytime "${ROOT_PARITION}" /mnt/ -v
+mkfs.btrfs --label tree "${ROOT_PARTITION}"
+mount -o compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/ -v
 btrfs subvolume create /mnt/root
 btrfs subvolume create /mnt/home
 btrfs subvolume create /mnt/nix
