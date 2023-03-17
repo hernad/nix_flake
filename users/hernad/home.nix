@@ -60,7 +60,8 @@
       favorite-apps = [ "firefox.desktop" "code.desktop" "org.gnome.Terminal.desktop" "spotify.desktop" "virt-manager.desktop" "org.gnome.Nautilus.desktop" ];
     };
     "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+      #color-scheme = "prefer-dark";
+      color-scheme = "prefer-light";
       enable-hot-corners = false;
     };
     # `gsettings get org.gnome.shell.extensions.user-theme name`
