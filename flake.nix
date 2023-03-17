@@ -145,6 +145,7 @@
               traits.gnome
               traits.hardened
               traits.gaming
+              traits.jetbrains
              users.hernad
             ];
           };
@@ -158,6 +159,7 @@
               traits.gnome
               traits.hardened
               traits.gaming
+              traits.jetbrains
              users.hernad
             ];
           };
