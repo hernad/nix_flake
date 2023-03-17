@@ -163,6 +163,7 @@
       "editor.fontSize" = 18;
       "editor.formatOnSave" = true;
       "workbench.startupEditor" = "none";
+      "window.titleBarStyle" = "custom";
     };
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
