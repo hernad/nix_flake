@@ -31,7 +31,7 @@
     environment.systemPackages = with pkgs; [
       gnome.gnome-tweaks
       gnome.gnome-characters
-      gnome.gnome-terminal
+      #gnome.gnome-terminal
     ];
 
     services.gnome.gnome-keyring.enable = true;
