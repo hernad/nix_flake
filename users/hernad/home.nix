@@ -135,15 +135,15 @@
     spotifyd
   ] else [ ]);
 
-  home.activation = {
-        afterWriteBoundary = {
-          after = [ "writeBoundary" ];
-          before = [ ];
-          data = ''
-             true
-          '';
-        };
-  };
+  #home.activation = {
+  #      afterWriteBoundary = {
+  #        after = [ "writeBoundary" ];
+  #        before = [ ];
+  #        data = ''
+  #           true
+  #        '';
+  #      };
+  #};
  
   
 
