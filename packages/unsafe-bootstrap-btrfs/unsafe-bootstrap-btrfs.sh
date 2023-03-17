@@ -64,7 +64,7 @@ sgdisk "${TARGET_DEVICE}" -n 2:0:0
 sgdisk "${TARGET_DEVICE}" -t 2:8309
 
 
-mkfs.btrfs --label tree "${ROOT_PARTITION}"
+mkfs.btrfs -f --label tree "${ROOT_PARTITION}"
 mount -o compress=zstd,lazytime "${ROOT_PARTITION}" /mnt/ -v
 btrfs subvolume create /mnt/root
 btrfs subvolume create /mnt/home
