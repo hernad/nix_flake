@@ -142,7 +142,7 @@
           data = ''
             find ~/.config/Code | while read -r path
             do
-              $DRY_RUN_CMD chmod --recursive +w \
+              $DRY_RUN_CMD sudo chmod --recursive +w \
                 "$(readlink --canonicalize "$path")"
             done
           '';
