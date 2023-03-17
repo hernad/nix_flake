@@ -136,8 +136,7 @@
   ] else [ ]);
 
 
-  # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
-
+  
 
   programs.vscode = {
     enable = true;
@@ -190,8 +189,24 @@
     ] else [ ]);
   };
 
-  xdg.configFile."Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink
-         "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
+  # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
+
+  #xdg.configFile."Code/User/settings.json".source = lib.mkForce config.lib.file.mkOutOfStoreSymlink
+  #       "${config.home.homeDirectory}/dev/dotfiles/nix/config/settings.json";
+
+  activation = {
+        afterWriteBoundary = {
+          after = [ "writeBoundary" ];
+          before = [ ];
+          data = ''
+            find ~/.config/Code | while read -r path
+            do
+              $DRY_RUN_CMD chmod --recursive +w \
+                "$(readlink --canonicalize "$path")"
+            done
+          '';
+        };
+  };
 
   programs.fish.enable = true;
   programs.fish.shellInit = ''
