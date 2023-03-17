@@ -59,6 +59,7 @@
       ];
       favorite-apps = [ 
         "firefox.desktop" 
+        "google-chrome.desktop"
         "code.desktop" 
         #"org.gnome.Terminal.desktop" 
         #"spotify.desktop" 
@@ -67,6 +68,7 @@
         "fish.desktop"
         "calc.desktop"
         "writer.desktop"
+        "dbeaver.desktop"
         ];
     };
     "org/gnome/desktop/interface" = {
