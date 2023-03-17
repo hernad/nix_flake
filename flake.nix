@@ -38,7 +38,8 @@
             inherit (pkgs) neovimConfigured fix-vscode;
 
             # Excluded from overlay deliberately to avoid people accidently importing it.
-            unsafe-bootstrap = pkgs.callPackage ./packages/unsafe-bootstrap { };
+            unsafe-bootstrap-zfs = pkgs.callPackage ./packages/unsafe-bootstrap-zfs { };
+            unsafe-bootstrap-btrfs = pkgs.callPackage ./packages/unsafe-bootstrap-btrfs { };
           });
 
       devShells = forAllSystems
@@ -147,6 +148,18 @@
             ];
           };
         
+          lenovo16b = nixpkgs.lib.nixosSystem {
+            inherit (x86_64Base) system;
+            modules = x86_64Base.modules ++ [
+              traits.machine
+              platforms.lenovo16b
+              traits.workstation
+              traits.gnome
+              traits.hardened
+              traits.gaming
+             users.hernad
+            ];
+          };
           #gizmo = nixpkgs.lib.nixosSystem {
           #  inherit (aarch64Base) system;
           #  modules = aarch64Base.modules ++ [
