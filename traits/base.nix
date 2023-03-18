@@ -29,6 +29,7 @@
           codezombiech.gitignore
           #denoland.vscode-deno
           dotjoshjohnson.xml
+          ms-python.python
         ]
         # Concise version from the vscode market place when not available in the default set.
         ++ vscode-utils.extensionsFromVscodeMarketplace [
