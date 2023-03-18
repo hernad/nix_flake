@@ -69,6 +69,7 @@
         "calc.desktop"
         "writer.desktop"
         "dbeaver.desktop"
+        "remmina.desktop"
         ];
     };
     "org/gnome/desktop/interface" = {
@@ -149,6 +150,7 @@
     libreoffice
     dbeaver
     google-chrome
+    viber
   ] ++ (if stdenv.isx86_64 then [
     # kicad
     #chromium
