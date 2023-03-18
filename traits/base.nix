@@ -19,7 +19,17 @@
       vcsodeWithExtension = vscode-with-extensions.override {
         # When the extension is already available in the default extensions set.
         vscodeExtensions = with vscode-extensions; [
+          # nixpkgs/applications/editors/vscode/extensions/default.nix
+          # bbenoist.nix = buildVscodeMarketplaceExtension { name = Nix ...
+          # }
           bbenoist.nix
+          bmalehorn.vscode-fish
+          brettm12345.nixfmt-vscode
+          bungcip.better-toml
+          codezombiech.gitingore
+          coenraads.bracket-pair-colorizer-2
+          denoland.vscode-deno
+          dotjoshjohnson.xml
         ]
         # Concise version from the vscode market place when not available in the default set.
         ++ vscode-utils.extensionsFromVscodeMarketplace [
