@@ -116,7 +116,7 @@
 
     "org/gnome/shell/extensions/dash-to-panel" = {
       panel-sizes = "{\"0\":64}";
-    }
+    };
 
     #"org/gnome/desktop/background" = {
     #  picture-uri = "file://${./saturn.jpg}";
