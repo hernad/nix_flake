@@ -14,59 +14,58 @@
 
     # https://stackoverflow.com/questions/54811067/how-can-i-install-extension-of-vscode
 
-environment.systemPackages = with pkgs;
-  let
-    vcsodeWithExtension = vscode-with-extensions.override {
-      # When the extension is already available in the default extensions set.
-      vscodeExtensions = with vscode-extensions; [
-        bbenoist.Nix
-      ]
-      # Concise version from the vscode market place when not available in the default set.
-      ++ vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "code-runner";
-          publisher = "formulahendry";
-          version = "0.12.0";
-          sha256 = "166ia73vrcl5c9hm4q1a73qdn56m0jc7flfsk5p5q41na9f10lb0";
-        }
-      ];
-    };
+  environment.systemPackages = with pkgs;
+    let
+      vcsodeWithExtension = vscode-with-extensions.override {
+        # When the extension is already available in the default extensions set.
+        vscodeExtensions = with vscode-extensions; [
+          bbenoist.Nix
+        ]
+        # Concise version from the vscode market place when not available in the default set.
+        ++ vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "code-runner";
+            publisher = "formulahendry";
+            version = "0.12.0";
+            sha256 = "166ia73vrcl5c9hm4q1a73qdn56m0jc7flfsk5p5q41na9f10lb0";
+          }
+        ];
+      };
 
-  in
-    [
-      patchelf
-      direnv
-      nix-direnv
-      git
-      python310
-      jq
-      fzf
-      ripgrep
-      lsof
-      htop
-      bat
-      grex
-      broot
-      bottom
-      fd
-      sd
-      fio
-      hyperfine
-      tokei
-      bandwhich
-      lsd
-      #abduco
-      #dvtm
-      ntfs3g
-      killall
-      gptfdisk
-      fio
-      smartmontools
-      rnix-lsp
-      graphviz
-      simple-http-server
-      vcsodeWithExtension
-    ];
+    in [
+        patchelf
+        direnv
+        nix-direnv
+        git
+        python310
+        jq
+        fzf
+        ripgrep
+        lsof
+        htop
+        bat
+        grex
+        broot
+        bottom
+        fd
+        sd
+        fio
+        hyperfine
+        tokei
+        bandwhich
+        lsd
+        #abduco
+        #dvtm
+        ntfs3g
+        killall
+        gptfdisk
+        fio
+        smartmontools
+        rnix-lsp
+        graphviz
+        simple-http-server
+        vcsodeWithExtension
+  ];
 
     #environment.systemPackages = with pkgs; [
     #  # Shell utilities
@@ -107,6 +106,7 @@ environment.systemPackages = with pkgs;
     #  graphviz
     #  simple-http-server
     #];
+    
     environment.shellAliases = { };
     environment.variables = {
       EDITOR = "${pkgs.neovimConfigured}/bin/nvim";
