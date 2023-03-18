@@ -115,7 +115,7 @@
     };
 
     "org/gnome/shell/extensions/dash-to-panel" = {
-      panel-sizes = "{\"0\":64}";
+      panel-sizes = "{\"0\":96}"; # 32, 48, 64, 96
     };
 
     #"org/gnome/desktop/background" = {
