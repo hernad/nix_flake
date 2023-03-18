@@ -93,15 +93,15 @@
       show-processor = true;
       show-network = true;
     };
-    "org/gnome/desktop/background" = {
-      picture-uri = "file://${./saturn.jpg}";
-      picture-uri-dark = "file://${./saturn.jpg}";
-    };
-    "org/gnome/desktop/screensaver" = {
-      picture-uri = "file://${./saturn.jpg}";
-      primary-color = "#3465a4";
-      secondary-color = "#000000";
-    };
+    #"org/gnome/desktop/background" = {
+    #  picture-uri = "file://${./saturn.jpg}";
+    #  picture-uri-dark = "file://${./saturn.jpg}";
+    #};
+    #"org/gnome/desktop/screensaver" = {
+    #  picture-uri = "file://${./saturn.jpg}";
+    #  primary-color = "#3465a4";
+    #  secondary-color = "#000000";
+    #};
   };
 
   home.packages = with pkgs; [
@@ -112,7 +112,8 @@
     # gnomeExtensions.sound-output-device-chooser
     gnomeExtensions.space-bar
     firefox
-    neovimConfigured
+    #neovimConfigured
+    vim
     inkscape
     gimp
     fix-vscode
@@ -121,10 +122,11 @@
     libreoffice
     dbeaver
     google-chrome
+    code
   ] ++ (if stdenv.isx86_64 then [
     # kicad
     #chromium
-    spotify
+    #spotify
     obs-studio
     obs-studio-plugins.obs-gstreamer
     obs-studio-plugins.obs-vkcapture
@@ -147,58 +149,58 @@
  
   
 
-  programs.vscode = {
-    enable = true;
-    package = pkgs.vscode.fhs;
-    userSettings = {
-      "workbench.colorTheme" = "Palenight Operator";
-      "terminal.integrated.scrollback" = 10000;
-      "terminal.integrated.fontFamily" = "Jetbrains Mono";
-      "terminal.integrated.fontSize" = 16;
-      "editor.fontFamily" = "Jetbrains Mono";
-      "telemetry.telemetryLevel" = "off";
-      "remote.SSH.useLocalServer" = false;
-      "editor.fontSize" = 18;
-      "editor.formatOnSave" = true;
-      "workbench.startupEditor" = "none";
-      "window.titleBarStyle" = "custom";
-    };
-    extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      ms-vscode-remote.remote-ssh
-      github.vscode-pull-request-github
-      editorconfig.editorconfig
-      matklad.rust-analyzer
-      mkhl.direnv
-      jock.svg
-      usernamehw.errorlens
-      vadimcn.vscode-lldb
-      bungcip.better-toml
-      msjsdiag.debugger-for-chrome
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "material-palenight-theme";
-        publisher = "whizkydee";
-        version = "2.0.2";
-        sha256 = "sha256-//EpXe+kKloqbMIZ8kstUKdYB490tQBBilB3Z9FfBNI=";
-      }
-      {
-        name = "todo-tree";
-        publisher = "Gruntfuggly";
-        version = "0.0.215";
-        sha256 = "sha256-WK9J6TvmMCLoqeKWh5FVp1mNAXPWVmRvi/iFuLWMylM=";
-      }
-      {
-        name = "hexeditor";
-        publisher = "ms-vscode";
-        version = "1.9.8";
-        sha256 = "sha256-XgRD2rDSLf1uYBm5gBmLzT9oLCpBmhtfoabKBekldhg=";
-      }
-    ] ++ (if pkgs.stdenv.isx86_64 then with pkgs.vscode-extensions; [
-      ms-python.python
-      ms-vscode.cpptools
-    ] else [ ]);
-  };
+  #programs.vscode = {
+  #  enable = true;
+  #  package = pkgs.vscode.fhs;
+  #  userSettings = {
+  #    "workbench.colorTheme" = "Palenight Operator";
+  #    "terminal.integrated.scrollback" = 10000;
+  #    "terminal.integrated.fontFamily" = "Jetbrains Mono";
+  #    "terminal.integrated.fontSize" = 16;
+  #    "editor.fontFamily" = "Jetbrains Mono";
+  #    "telemetry.telemetryLevel" = "off";
+  #    "remote.SSH.useLocalServer" = false;
+  #    "editor.fontSize" = 18;
+  #    "editor.formatOnSave" = true;
+  #    "workbench.startupEditor" = "none";
+  #    "window.titleBarStyle" = "custom";
+  #  };
+  #  extensions = with pkgs.vscode-extensions; [
+  #    bbenoist.nix
+  #    ms-vscode-remote.remote-ssh
+  #    github.vscode-pull-request-github
+  #    editorconfig.editorconfig
+  #    matklad.rust-analyzer
+  #    mkhl.direnv
+  #    jock.svg
+  #    usernamehw.errorlens
+  #    vadimcn.vscode-lldb
+  #    bungcip.better-toml
+  #    msjsdiag.debugger-for-chrome
+  #  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+  #    {
+  #      name = "material-palenight-theme";
+  #      publisher = "whizkydee";
+  #      version = "2.0.2";
+  #      sha256 = "sha256-//EpXe+kKloqbMIZ8kstUKdYB490tQBBilB3Z9FfBNI=";
+  #    }
+  #    {
+  #      name = "todo-tree";
+  #      publisher = "Gruntfuggly";
+  #      version = "0.0.215";
+  #      sha256 = "sha256-WK9J6TvmMCLoqeKWh5FVp1mNAXPWVmRvi/iFuLWMylM=";
+  #    }
+  #    {
+  #      name = "hexeditor";
+  #      publisher = "ms-vscode";
+  #      version = "1.9.8";
+  #      sha256 = "sha256-XgRD2rDSLf1uYBm5gBmLzT9oLCpBmhtfoabKBekldhg=";
+  #    }
+  #  ] ++ (if pkgs.stdenv.isx86_64 then with pkgs.vscode-extensions; [
+  #    ms-python.python
+  #    ms-vscode.cpptools
+  #  ] else [ ]);
+  #};
 
   # https://github.com/andyrichardson/dotfiles/blob/28c3630e71d65d92b88cf83b2f91121432be0068/nix/home/vscode.nix
 
