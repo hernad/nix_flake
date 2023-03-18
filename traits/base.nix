@@ -43,6 +43,7 @@
       };
 
     in [
+        remmina
         patchelf
         silver-searcher
         direnv
