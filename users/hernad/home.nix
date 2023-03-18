@@ -93,6 +93,24 @@
       show-processor = true;
       show-network = true;
     };
+
+    "org/gnome/desktop/interface" = {
+        font-name = "Cantarell 12";
+        document-font-name = "Cantarell 12";
+        text-scaling-factor = 1.50;
+        monospace-font-name = "Source Code Pro 12";
+        titlebar-font = "Cantarell Bold 12";
+        clock-show-weekday = true; 
+    };
+
+    "system/locale" = {
+      region = bs_BA.UTF-8;
+    };
+
+    "org/gnome/desktop/input-sources" = {
+      sources = [("xkb", "us"), ("xkb", "ba")];
+    };
+
     #"org/gnome/desktop/background" = {
     #  picture-uri = "file://${./saturn.jpg}";
     #  picture-uri-dark = "file://${./saturn.jpg}";
