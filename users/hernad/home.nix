@@ -109,8 +109,8 @@
 
     "org/gnome/desktop/input-sources" = {
       sources = [
-       ("xkb" "us")
-       ("xkb" "ba")
+       ["xkb" "us"]
+       ["xkb" "ba"]
       ];
     };
 
