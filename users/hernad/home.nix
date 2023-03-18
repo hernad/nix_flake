@@ -95,9 +95,9 @@
     };
 
     "org/gnome/desktop/interface" = {
-        font-name = "Cantarell 12";
+        font-name = "Cantarell 13";
         document-font-name = "Cantarell 12";
-        text-scaling-factor = 1.50;
+        text-scaling-factor = 1.70;
         monospace-font-name = "Source Code Pro 12";
         titlebar-font = "Cantarell Bold 12";
         clock-show-weekday = true; 
