@@ -43,7 +43,7 @@
 
     "/persist" = 
     {
-       device = "rpool/nixos/persist";
+       device = "bpool/nixos/persist";
        fsType = "zfs";
        options = [ "zfsutil" "X-mount.mkdir" ];
     };
