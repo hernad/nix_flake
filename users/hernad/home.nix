@@ -70,6 +70,7 @@
         "writer.desktop"
         "dbeaver.desktop"
         "remmina.desktop"
+        "viber.desktop"
         ];
     };
     "org/gnome/desktop/interface" = {
