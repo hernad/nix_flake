@@ -14,30 +14,44 @@ if test -z "${TARGET_DEVICE-}"; then
 fi
 echo "Got \`$(gum style --foreground ${BLUE} "TARGET_DEVICE")=$(gum style --foreground ${CYAN} "${TARGET_DEVICE}")\`"
 
-if test -z "${INST_PARTSIZE_SWAP-}"; then
-	INST_PARTSIZE_SWAP=$(gum input --prompt "Swap size? (INST_PARTSIZE_SWAP): " --placeholder "4")
+if test -z "${EFI_PARTITION-}"; then
+	EFI_PARTITION=$(gum input --prompt "What will be the created EFI partition? (EFI_PARTITION): " --placeholder "/dev/nvme?n?p1")
 fi
-echo "Got \`$(gum style --foreground ${BLUE} "INST_PARTSIZE_SWAP")=$(gum style --foreground ${CYAN} "${INST_PARTSIZE_SWAP}")\`"
+echo "Got \`$(gum style --foreground ${BLUE} "EFI_PARTITION")=$(gum style --foreground ${CYAN} "${EFI_PARTITION}")\`"
 
-
-if test -z "${INST_PARTSIZE_RPOOL-}"; then
-	INST_PARTSIZE_RPOOL=$(gum input --prompt "What will be size of main partition empty for ALL space? (INST_PARTSIZE_RPOOL): " --placeholder "")
+if test -z "${BOOT_PARTITION-}"; then
+	BOOT_PARTITION=$(gum input --prompt "What will be the created root partition? (BOOT_PARTITION): " --placeholder "/dev/nvme?n?p2")
 fi
-echo "Got \`$(gum style --foreground ${BLUE} "INST_PARTSIZE_RPOOL")=$(gum style --foreground ${CYAN} "${INST_PARTSIZE_RPOOL}")\`"
+echo "Got \`$(gum style --foreground ${BLUE} "BOOT_PARTITION")=$(gum style --foreground ${CYAN} "${BOOT_PARTITION}")\`"
 
-if test -z "${INST_MOUNT_ONLY-}"; then
-	INST_MOUNT_ONLY=$(gum input --prompt "mount only? (INST_MOUNT_ONLY): " --placeholder "y")
+if test -z "${ROOT_PARTITION-}"; then
+	ROOT_PARTITION=$(gum input --prompt "What will be the created root partition? (ROOT_PARTITION): " --placeholder "/dev/nvme?n?p3")
 fi
-echo "Got \`$(gum style --foreground ${BLUE} "INST_MOUNT_ONLY")=$(gum style --foreground ${CYAN} "${INST_MOUNT_ONLY}")\`"
+echo "Got \`$(gum style --foreground ${BLUE} "ROOT_PARTITION")=$(gum style --foreground ${CYAN} "${ROOT_PARTITION}")\`"
+
+if test -z "${SWAP_PARTITION-}"; then
+	SWAP_PARTITION=$(gum input --prompt "What will be the created root partition? (SWAP_PARTITION): " --placeholder "/dev/nvme?n?p4")
+fi
+echo "Got \`$(gum style --foreground ${BLUE} "SWAP_PARTITION")=$(gum style --foreground ${CYAN} "${SWAP_PARTITION}")\`"
+
+if test -z "${BIOS_PARTITION-}"; then
+	BIOS_PARTITION=$(gum input --prompt "What will be the created root partition? (BIOS_PARTITION): " --placeholder "/dev/nvme?n?p5")
+fi
+echo "Got \`$(gum style --foreground ${BLUE} "BIOS_PARTITION")=$(gum style --foreground ${CYAN} "${BIOS_PARTITION}")\`"
+
+if test -z "${SWAP_SIZE_G-}"; then
+	SWAP_SIZE_G=$(gum input --prompt "Swap size? (SWAP_SIZE_G): " --placeholder "4")
+fi
+echo "Got \`$(gum style --foreground ${BLUE} "SWAP_SIZE_G")=$(gum style --foreground ${CYAN} "${SWAP_SIZE_G}")\`"
+
+if test -z "${LAST_PARTITION-}"; then
+	SWAP_SIZE_G=$(gum input --prompt "Last used (windows) partition? (LAST_PARTITION): " --placeholder "4")
+fi
+echo "Got \`$(gum style --foreground ${BLUE} "LAST_PARTITION")=$(gum style --foreground ${CYAN} "${LAST_PARTITION}")\`"
+
 
 gum style "
-This will irrevocably destroy all data on \`TARGET_DEVICE=${TARGET_DEVICE-/dev/null}\`!!!
-
-An FAT32 EFI system partition will be created as the first partition.
-
-Several zpools will be created, then mounted on \`/mnt\`.
-
-Several files will be created in the \`persist\` zfs dataset.
+This will create new partitions !!!
 
 This script will not install NixOS, but you will be able to run \`nixos-install\` immediately after.
 
@@ -46,64 +60,57 @@ This process is highly experimental and will absolutely toss your machine into t
 gum confirm "Are you ready to have a really bad time?" || (echo "Okay! Then, toodles!" && exit 1)
 
 
-gum style --bold --foreground "${RED}" "Destroying existing partitions on \`TARGET_DEVICE=${TARGET_DEVICE}\` in 10..."
-sleep 10
-gum style --bold --foreground "${RED}" "Let's gooooo!!!"
+#gum style --bold --foreground "${RED}" "Destroying existing partitions on \`TARGET_DEVICE=${TARGET_DEVICE}\` in 10..."
+#sleep 10
+#gum style --bold --foreground "${RED}" "Let's gooooo!!!"
 
 umount -r /mnt || true
-umount -r "${TARGET_DEVICE}" || true
 
-swapoff "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
-cryptsetup close "${TARGET_DEVICE##*/}${PART}4" || true
+swapoff "/dev/mapper/${SWAP_PARTITION##*/}" || true
+cryptsetup close "${SWAP_PARTITION##*/}" || true
 
-if [ "$INST_MOUNT_ONLY" != "y" ] ; then
-
-    wipefs -af "${TARGET_DEVICE}" || true
-    sgdisk --zap-all "${TARGET_DEVICE}"
-
-    partprobe "${TARGET_DEVICE}" || true
-
-    gum style --bold --foreground "${RED}" "sgdisk partitioning ..."
-
-    # efi part1
-    #EFI System partition (ef00)
-    sgdisk -n1:1M:+1G -t1:EF00 "${TARGET_DEVICE}"
-    # boot part2
-    # be00 Solaris boot  
-    sgdisk -n2:0:+4G -t2:BE00 "${TARGET_DEVICE}"
-
-    # part4 - swap partition
-    # 8200 Linux swap
-    sgdisk "-n4:0:+${INST_PARTSIZE_SWAP}G" -t4:8200 "${TARGET_DEVICE}" || true
-
-    # rpool part3 - zfs root/data partition
-    if test -z "${INST_PARTSIZE_RPOOL}"; then
-        sgdisk -n3:0:0 -t3:BF00 "${TARGET_DEVICE}"
-    else
-        sgdisk "-n3:0:+${INST_PARTSIZE_RPOOL}G" -t3:BF00 "${TARGET_DEVICE}"
-    fi
-
-    # part5
-    #BIOS Boot Partition (type code ef02)
-    sgdisk -a1 -n5:24K:+1000K -t5:EF02 "${TARGET_DEVICE}"
-
-    #sync && udevadm settle && sleep 3
-
-    partprobe "${TARGET_DEVICE}" || true
+gum style --bold --foreground "${RED}" "sgdisk partitioning ..."
 
 
-    gum style --bold --foreground "${RED}" "swap ..."
+p=$((LAST_PARTITION+1))
 
-    # swap
-    cryptsetup open --type plain --key-file /dev/random "${TARGET_DEVICE}${PART}4" "${TARGET_DEVICE##*/}${PART}4"
-    mkswap -f "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
-    swapon "/dev/mapper/${TARGET_DEVICE##*/}${PART}4" || true
+# efi part1
+#EFI System partition (ef00)
+sgdisk "-n${p}:0:+1G" -t1:EF00 "${TARGET_DEVICE}"
+
+p=$((LAST_PARTITION+2))
+# boot part2
+# be00 Solaris boot  
+sgdisk "-n${p}:0:+4G" "-t${p}:BE00" "${TARGET_DEVICE}"
+
+p=$((LAST_PARTITION+4))
+# part4 - swap partition
+# 8200 Linux swap
+sgdisk "-n${p}:0:+${SWAP_SIZE_G}G" "-t${p}:8200" "${TARGET_DEVICE}" || true
+
+p=$((LAST_PARTITION+3))
+# rpool part3 - zfs root/data partition
+sgdisk "-n${p}:0:0" "-t${p}:BF00" "${TARGET_DEVICE}"
+
+p=$((LAST_PARTITION+5))
+# part5
+#BIOS Boot Partition (type code ef02)
+sgdisk -a1 "-n${p}:24K:+1000K" "-t${p}:EF02" "${TARGET_DEVICE}"
+
+partprobe "${TARGET_DEVICE}" || true
+
+gum style --bold --foreground "${RED}" "swap ..."
+
+# swap
+cryptsetup open --type plain --key-file /dev/random "${SWAP_PARTITION}" "${SWAP_PARTITION##*/}"
+mkswap -f "/dev/mapper/${SWAP_PARTITION##*/}" || true
+swapon "/dev/mapper/${SWAP_PARTITION##*/}" || true
 
 
-    gum style --bold --foreground "${RED}" "zpool bpool ..."
+gum style --bold --foreground "${RED}" "zpool bpool ..."
 
-    # zfs/solaris boot
-    zpool create -f \
+# zfs/solaris boot
+zpool create -f \
         -o compatibility=grub2 \
         -o ashift=12 \
         -o autotrim=on \
@@ -117,13 +124,13 @@ if [ "$INST_MOUNT_ONLY" != "y" ] ; then
         -O mountpoint=/boot \
         -R /mnt \
         bpool \
-        "${TARGET_DEVICE}${PART}2"
+        "${BOOT_PARTITION}"
 
 
-    gum style --bold --foreground "${RED}" "zpool rpool ..."
+gum style --bold --foreground "${RED}" "zpool rpool ..."
 
-    # zfs data partition
-    zpool create -f \
+# zfs root - data partition
+zpool create -f \
         -o ashift=12 \
         -o autotrim=on \
         -R /mnt \
@@ -136,100 +143,62 @@ if [ "$INST_MOUNT_ONLY" != "y" ] ; then
         -O xattr=sa \
         -O mountpoint=/ \
         rpool \
-        "${TARGET_DEVICE}${PART}3"
+        "${ROOT_PARTITION}"
 
-    echo zfs rpool/nixos
 
-    zfs create \
+gum style --bold --foreground "${RED}" "zfs rpool/nixos ..."
+
+zfs create \
       -o canmount=off \
       -o mountpoint=none \
       rpool/nixos
 
 
-    gum style --bold --foreground "${RED}" "zfs rpool/nixos ..."
+zfs create -o mountpoint=legacy rpool/nixos/root
+mount -t zfs rpool/nixos/root /mnt/
 
-    # echo zfs ostali
+zfs create -o mountpoint=legacy rpool/nixos/nix
+mkdir -pv /mnt/nix
+mount -t zfs rpool/nixos/nix /mnt/nix
 
-    zfs create -o mountpoint=legacy rpool/nixos/root
-    mount -t zfs rpool/nixos/root /mnt/
+zfs create -o mountpoint=legacy rpool/nixos/home
+mkdir -pv /mnt/home
+mount -t zfs rpool/nixos/home /mnt/home
 
-    zfs create -o mountpoint=legacy rpool/nixos/home
-    mkdir /mnt/home
-    mount -t zfs rpool/nixos/home /mnt/home
+zfs create -o mountpoint=legacy rpool/nixos/var
+zfs create -o mountpoint=legacy rpool/nixos/var/log
+mkdir -pv /mnt/var/log
+mount -t zfs rpool/nixos/var/log /mnt/var/log
 
-    zfs create -o mountpoint=legacy rpool/nixos/var
-    zfs create -o mountpoint=legacy rpool/nixos/var/lib
-    
-    zfs create -o mountpoint=legacy rpool/nixos/empty
-    zfs snapshot rpool/nixos/empty@start
-
-
-
-    #mount -o compress=zstd,lazytime /dev/mapper/encrypt /mnt/ -v
-
-    #mkdir -p /mnt/snapshots/root/
-    #btrfs subvolume snapshot -r /mnt/root /mnt/snapshots/root/blank
-
-    #mkdir -pv /mnt/nix
-    #mount -o subvol=nix,compress=zstd,lazytime /dev/mapper/encrypt /mnt/nix
+zfs create -o mountpoint=legacy rpool/nixos/empty
+zfs snapshot rpool/nixos/empty@start
 
 
-    #mkdir -pv /mnt/persist
-    #mount -o subvol=persist,compress=zstd,lazytime /dev/mapper/encrypt /mnt/persist
+gum style --bold --foreground "${RED}" "zfs bpool/nixos ..."
 
-    zfs create -o mountpoint=legacy rpool/nixos/persist
-    mkdir -pv /mnt/persist
-    mount -t zfs rpool/nixos/persist /mnt/persist
+zfs create -o mountpoint=none bpool/nixos
+zfs create -o mountpoint=legacy bpool/nixos/root
+mkdir -pv /mnt/boot
+mount -t zfs bpool/nixos/root /mnt/boot
+
+zfs create -o mountpoint=legacy bpool/nixos/persist
+mkdir -pv /mnt/persist
+mount -t zfs bpool/nixos/persist /mnt/persist
+
+gum style --bold --foreground "${RED}" "mkfs efi ${EFI_PARTITION} ..."
+
+# format and mount EFI partition
+mkfs.vfat -n EFI "${EFI_PARTITION}"
+
+#https://stackoverflow.com/questions/31307210/what-does-1-mean-in-bash
+# TARGET_DEVICE=/dev/sdb, ${TARGET_DEVICE##*/} => sdb
+
+mkdir -p "/mnt/boot/efis/${EFI_PARTITION##*/}"
+mount -t vfat "${EFI_PARTITION}" "/mnt/boot/efis/${EFI_PARTITION##*/}"
 
 
-    #mount -o subvol=log,compress=zstd,lazytime /dev/mapper/encrypt /mnt/var/log
-    zfs create -o mountpoint=legacy rpool/nixos/var/log
-    mkdir -pv /mnt/var/log
-    mount -t zfs rpool/nixos/var/log /mnt/var/log
-
-    #mkdir -pv /mnt/boot
-    #mount -o subvol=boot,compress=zstd,lazytime /dev/mapper/encrypt /mnt/boot
-    
-    zfs create -o mountpoint=none bpool/nixos
-    zfs create -o mountpoint=legacy bpool/nixos/root
-    mkdir -pv /mnt/boot
-    mount -t zfs bpool/nixos/root /mnt/boot
 
 
-    gum style --bold --foreground "${RED}" "mkfs efi ${TARGET_DEVICE}${PART}1  ..."
-
-    # format and mount EFI partition
-    mkfs.vfat -n EFI "${TARGET_DEVICE}${PART}1"
-
-    #https://stackoverflow.com/questions/31307210/what-does-1-mean-in-bash
-    # TARGET_DEVICE=/dev/sdb, ${TARGET_DEVICE##*/} => sdb
-
-    mkdir -p "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
-    mount -t vfat "${TARGET_DEVICE}${PART}1" "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
-
-    #mkfs.vfat -F 32 "${EFI_PARTITION}"
-    #mkdir -p /mnt/efi
-    #mount "${EFI_PARTITION}" /mnt/efi
-
-else
-    mount -t zfs rpool/nixos/root /mnt/
-
-    mkdir -pv /mnt/home
-    mount -t zfs rpool/nixos/home /mnt/home
-    
-    mkdir -pv /mnt/var/log
-    mount -t zfs rpool/nixos/var/log /mnt/var/log
-    
-    mkdir -pv /mnt/persist
-    mount -t zfs rpool/nixos/persist /mnt/persist
-
-    mkdir -pv /mnt/boot
-    mount -t zfs bpool/nixos/root /mnt/boot
-
-    mkdir -p "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
-    mount -t vfat "${TARGET_DEVICE}${PART}1" "/mnt/boot/efis/${TARGET_DEVICE##*/}${PART}1"
-
-fi
 
 # Workaround https://github.com/NixOS/nixpkgs/issues/73404
 mkdir -p /mnt/mnt

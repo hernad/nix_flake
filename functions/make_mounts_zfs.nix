@@ -7,23 +7,29 @@
 {
 
     "/" =
-    { device = "rpool/nixos/root";
-      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    { 
+      device = "rpool/nixos/root";
+      fsType = "zfs"; 
+      options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
     "/home" =
-    { device = "rpool/nixos/home";
-      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    { 
+      device = "rpool/nixos/home";
+      fsType = "zfs"; 
+      options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-    "/var/lib" =
-    { device = "rpool/nixos/var/lib";
+    "/nix" =
+    { 
+      device = "rpool/nixos/nix";
       fsType = "zfs"; 
       options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
     "/var/log" =
-    { device = "rpool/nixos/var/log";
+    { 
+      device = "rpool/nixos/var/log";
       fsType = "zfs"; 
       options = [ "zfsutil" "X-mount.mkdir" ];
     };
@@ -33,16 +39,17 @@
       device = "bpool/nixos/root";
       fsType = "zfs"; 
       options = [ "zfsutil" "X-mount.mkdir" ];
-      neededForBoot = true;
     };
 
-    "/persist" = {
+    "/persist" = 
+    {
        device = "rpool/nixos/persist";
        fsType = "zfs";
        options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-    "/boot/efis/${efi}" = {
+    "/boot/efis/${efi}" = 
+    {
       device = "/dev/${efi}";
       fsType = "vfat";
       options = [
@@ -53,12 +60,18 @@
       ];
     };
 
-    "/boot/efi" =
-    { 
-      device = "/boot/efis/${efi}";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+    #"/boot/efi" =
+    #{ 
+    #  device = "/boot/efis/${efi}";
+    #  fsType = "none";
+    #  options = [ "bind" ];
+    #};
+
+    #"/var/lib" =
+    #{ device = "rpool/nixos/var/lib";
+    #  fsType = "zfs"; 
+    #  options = [ "zfsutil" "X-mount.mkdir" ];
+    #};
 
 
 }

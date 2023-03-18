@@ -1,14 +1,16 @@
 { writeShellApplication, bash, gum, cryptsetup, gptfdisk, btrfs-progs, dosfstools, ... }:
 
+# https://nixos.org/manual/nixpkgs/stable/#trivial-builder-writeShellApplication
+
 writeShellApplication {
-  name = "unsafe-bootstrap-zfs";
+  name = "mount-zfs";
   runtimeInputs = [
     bash
     gum
-    cryptsetup
+    #cryptsetup
     gptfdisk
-    #btrfs-progs
+    btrfs-progs
     dosfstools
   ];
-  text = builtins.readFile ./unsafe-bootstrap-zfs.sh;
+  text = builtins.readFile ./mount-zfs.sh;
 }

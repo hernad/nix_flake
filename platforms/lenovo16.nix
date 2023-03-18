@@ -1,9 +1,10 @@
 { config, pkgs, lib, modulesPath, ... }:
 
 let
-  diskName = "nvme0n1";
-  efi = "${diskName}p1";
-  swap = "${diskName}p5";
+  diskPart = (import ./../disk_layout/lenovo16_zfs.nix).diskPart;
+  diskName = diskPart.diskName;
+  swap = "/dev/${diskPart.swap}"; 
+  efi = "${diskPart.efi}";
   makeMounts = import ./../functions/make_mounts_zfs.nix;
 in
 {
@@ -26,7 +27,6 @@ in
 
     hardware.cpu.amd.updateMicrocode = true;
     systemd.services.zfs-mount.enable = false;
-
 
     fileSystems = makeMounts {
       inherit efi;

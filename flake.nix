@@ -41,6 +41,7 @@
             unsafe-bootstrap-zfs = pkgs.callPackage ./packages/unsafe-bootstrap-zfs { };
             unsafe-bootstrap-btrfs = pkgs.callPackage ./packages/unsafe-bootstrap-btrfs { };
             mount-btrfs = pkgs.callPackage ./packages/mount-btrfs { };
+            mount-zfs = pkgs.callPackage ./packages/mount-zfs { };
           });
 
       devShells = forAllSystems
