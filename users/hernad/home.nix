@@ -69,7 +69,7 @@
         "calc.desktop"
         "writer.desktop"
         "dbeaver.desktop"
-        "remmina.desktop"
+        "org.remmina.Remmina.desktop"
         "viber.desktop"
         ];
     };
