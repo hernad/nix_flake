@@ -116,13 +116,12 @@
     vim
     inkscape
     gimp
-    fix-vscode
+    #fix-vscode
     asciinema
     agg
     libreoffice
     dbeaver
     google-chrome
-    vscode
   ] ++ (if stdenv.isx86_64 then [
     # kicad
     #chromium
