@@ -3,6 +3,11 @@
 */
 { config, pkgs, ... }:
 
+let
+  diskPart = (import ./../disk_layout/lenovo16_zfs.nix).diskPart;
+  diskName = "${diskPart.diskName}";
+  efiPart = "${diskPart.efi}";
+in
 {
   config = {
     boot.kernel.sysctl = {
@@ -34,7 +39,7 @@
 
     #boot.kernelPackages = pkgs.linuxPackages_latest;
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    boot.loader.efi.efiSysMountPoint = "/boot/efis/${efiPart}";
     boot.loader.efi.canTouchEfiVariables = false;
     boot.loader.generationsDir.copyKernels = true;
     boot.loader.grub.efiInstallAsRemovable = true;
@@ -58,9 +63,9 @@
       done
       rm -rf $ESP_MIRROR
     '';
-    #boot.loader.grub.devices = [
-    #  "/dev/nvme0n1" 
-    #];
+    boot.loader.grub.devices = [
+      diskName 
+    ];
 
 
     boot.binfmt.emulatedSystems = (if pkgs.stdenv.isx86_64 then [
