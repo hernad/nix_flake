@@ -34,7 +34,7 @@
 
     in [
         patchelf
-        ag
+        silver-searcher
         direnv
         nix-direnv
         git
