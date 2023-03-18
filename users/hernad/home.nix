@@ -104,7 +104,7 @@
     };
 
     "system/locale" = {
-      region = bs_BA.UTF-8;
+      region = "bs_BA.UTF-8";
     };
 
     "org/gnome/desktop/input-sources" = {
