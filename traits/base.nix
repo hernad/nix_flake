@@ -27,8 +27,7 @@
           brettm12345.nixfmt-vscode
           bungcip.better-toml
           codezombiech.gitignore
-          coenraads.bracket-pair-colorizer-2
-          denoland.vscode-deno
+          #denoland.vscode-deno
           dotjoshjohnson.xml
         ]
         # Concise version from the vscode market place when not available in the default set.
