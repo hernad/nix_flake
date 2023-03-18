@@ -45,7 +45,7 @@ fi
 echo "Got \`$(gum style --foreground ${BLUE} "SWAP_SIZE_G")=$(gum style --foreground ${CYAN} "${SWAP_SIZE_G}")\`"
 
 if test -z "${LAST_PARTITION-}"; then
-	SWAP_SIZE_G=$(gum input --prompt "Last used (windows) partition? (LAST_PARTITION): " --placeholder "4")
+	LAST_PARTITION=$(gum input --prompt "Last used (windows) partition? (LAST_PARTITION): " --placeholder "4")
 fi
 echo "Got \`$(gum style --foreground ${BLUE} "LAST_PARTITION")=$(gum style --foreground ${CYAN} "${LAST_PARTITION}")\`"
 
