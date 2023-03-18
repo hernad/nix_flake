@@ -5,7 +5,7 @@ CYAN=36
 RED=31
 
 #PART=-part
-PART=p
+#PART=p
 
 lsblk -o name,mountpoint,size,uuid,vendor
 
