@@ -26,7 +26,7 @@
           bmalehorn.vscode-fish
           brettm12345.nixfmt-vscode
           bungcip.better-toml
-          codezombiech.gitingore
+          codezombiech.gitignore
           coenraads.bracket-pair-colorizer-2
           denoland.vscode-deno
           dotjoshjohnson.xml
