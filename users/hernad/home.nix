@@ -108,10 +108,7 @@
     };
 
     "org/gnome/desktop/input-sources" = {
-      sources = [
-       ["xkb" "us"]
-       ["xkb" "ba"]
-      ];
+      sources = "('xkb', 'us'), ('xkb', 'ba')";
     };
 
     "org/gnome/shell/extensions/dash-to-panel" = {
