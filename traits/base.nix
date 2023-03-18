@@ -27,7 +27,7 @@
             name = "code-runner";
             publisher = "formulahendry";
             version = "0.12.0";
-            sha256 = "166ia73vrcl5c9hm4q1a73qdn56m0jc7flfsk5p5q41na9f10lb0";
+            sha256 = "43681cb9c946ecd2d1f351e32a3ff4445d2333912a7b6bd931ba6869ba7fa2c8";
           }
         ];
       };
