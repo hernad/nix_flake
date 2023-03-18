@@ -41,7 +41,8 @@
       vdpauinfo
       ffmpeg
       openrgb
-      neovimConfigured
+      vim
+      #neovimConfigured
     ];
 
     services.udev.packages = with pkgs; [ openrgb ];
