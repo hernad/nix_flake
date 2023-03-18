@@ -108,7 +108,10 @@
     };
 
     "org/gnome/desktop/input-sources" = {
-      sources = [("xkb", "us"), ("xkb", "ba")];
+      sources = [
+       ("xkb" "us")
+       ("xkb" "ba")
+      ];
     };
 
     #"org/gnome/desktop/background" = {
