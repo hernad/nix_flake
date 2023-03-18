@@ -5,7 +5,7 @@
 
 let
   diskPart = (import ./../disk_layout/lenovo16_zfs.nix).diskPart;
-  diskName = "${diskPart.diskName}";
+  diskTarget = "/dev/${diskPart.diskName}";
   efiPart = "${diskPart.efi}";
 in
 {
@@ -64,7 +64,7 @@ in
       rm -rf $ESP_MIRROR
     '';
     boot.loader.grub.devices = [
-      diskName 
+      diskTarget
     ];
 
 
