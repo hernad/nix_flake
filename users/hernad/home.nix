@@ -122,7 +122,7 @@
     libreoffice
     dbeaver
     google-chrome
-    code
+    vscode
   ] ++ (if stdenv.isx86_64 then [
     # kicad
     #chromium
