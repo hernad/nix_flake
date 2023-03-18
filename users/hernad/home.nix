@@ -108,7 +108,12 @@
     };
 
     "org/gnome/desktop/input-sources" = {
-      sources = ["('xkb', 'us')" "('xkb', 'ba')"];
+      #window-position = lib.hm.gvariant.mkTuple [100 100];
+
+      sources = [
+        lib.hm.gvariant.mkTuple ["xkb" "us"] 
+        lib.hm.gvariant.mkTuple ["xkb" "ba"]
+      ];
     };
 
     "org/gnome/shell/extensions/dash-to-panel" = {
