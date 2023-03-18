@@ -19,7 +19,7 @@
       vcsodeWithExtension = vscode-with-extensions.override {
         # When the extension is already available in the default extensions set.
         vscodeExtensions = with vscode-extensions; [
-          bbenoist.Nix
+          bbenoist.nix
         ]
         # Concise version from the vscode market place when not available in the default set.
         ++ vscode-utils.extensionsFromVscodeMarketplace [
@@ -106,7 +106,7 @@
     #  graphviz
     #  simple-http-server
     #];
-    
+
     environment.shellAliases = { };
     environment.variables = {
       EDITOR = "${pkgs.neovimConfigured}/bin/nvim";
