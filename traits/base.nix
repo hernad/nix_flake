@@ -49,6 +49,7 @@
         nix-direnv
         git
         python310
+        ansible
         jq
         fzf
         ripgrep
