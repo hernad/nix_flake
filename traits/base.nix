@@ -12,8 +12,28 @@
     i18n.defaultLocale = "en_US.UTF-8";
     i18n.supportedLocales = [ "all" ];
 
-    environment.systemPackages = with pkgs; [
-      # Shell utilities
+    # https://stackoverflow.com/questions/54811067/how-can-i-install-extension-of-vscode
+
+environment.systemPackages = with pkgs;
+  let
+    vcsodeWithExtension = vscode-with-extensions.override {
+      # When the extension is already available in the default extensions set.
+      vscodeExtensions = with vscode-extensions; [
+        bbenoist.Nix
+      ]
+      # Concise version from the vscode market place when not available in the default set.
+      ++ vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "code-runner";
+          publisher = "formulahendry";
+          version = "0.12.0";
+          sha256 = "166ia73vrcl5c9hm4q1a73qdn56m0jc7flfsk5p5q41na9f10lb0";
+        }
+      ];
+    };
+
+  in
+    [
       patchelf
       direnv
       nix-direnv
@@ -35,38 +55,58 @@
       tokei
       bandwhich
       lsd
-      abduco
-      dvtm
-      #neovim-remote
+      #abduco
+      #dvtm
       ntfs3g
-      # nvme-cli
-      # nvmet-cli
-      # libhugetlbfs # This has a build failure.
       killall
       gptfdisk
       fio
       smartmontools
-      neovimConfigured
       rnix-lsp
       graphviz
       simple-http-server
-      vscode
-      (vscode-with-extensions.override {
-        vscodeExtensions = with vscode-extensions; [
-          bbenoist.nix
-          ms-python.python
-          ms-azuretools.vscode-docker
-          ms-vscode-remote.remote-ssh
-        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-          {
-            name = "remote-ssh-edit";
-            publisher = "ms-vscode-remote";
-            version = "0.47.2";
-            sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
-          }
-        ];
-      })
+      vcsodeWithExtension
     ];
+
+    #environment.systemPackages = with pkgs; [
+    #  # Shell utilities
+    #  patchelf
+    #  direnv
+    #  nix-direnv
+    #  git
+    #  python310
+    #  jq
+    #  fzf
+    #  ripgrep
+    #  lsof
+    #  htop
+    #  bat
+    #  grex
+    #  broot
+    #  bottom
+    #  fd
+    #  sd
+    #  fio
+    #  hyperfine
+    #  tokei
+    #  bandwhich
+    #  lsd
+    #  abduco
+    #  dvtm
+    #  #neovim-remote
+    #  ntfs3g
+    #  # nvme-cli
+    #  # nvmet-cli
+    #  # libhugetlbfs # This has a build failure.
+    #  killall
+    #  gptfdisk
+    #  fio
+    #  smartmontools
+    #  neovimConfigured
+    #  rnix-lsp
+    #  graphviz
+    #  simple-http-server
+    #];
     environment.shellAliases = { };
     environment.variables = {
       EDITOR = "${pkgs.neovimConfigured}/bin/nvim";
