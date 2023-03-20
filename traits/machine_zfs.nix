@@ -15,14 +15,12 @@ in
       "net.ipv4.tcp_fastopen" = 3;
     };
     boot.initrd.availableKernelModules = [
-      "usb_storage"
-      "nbd"
-      "nvme"
       "ahci"
       "xhci_pci"
       "virtio_pci"
       "virtio_blk"
       "ehci_pci"
+      "nvme"
       "uas"
       "sd_mod"
       "sr_mod"

@@ -16,7 +16,7 @@ in
   
   config = {
     boot.kernelParams = [ "amd_iommu=on" "iommu=pt" "iommu=1" "rd.driver.pre=vfio-pci" ];
-    boot.initrd.kernelModules = [ "amdgpu" ];
+    boot.initrd.kernelModules = [];
     boot.kernelModules = [ 
       "tap" 
       "kvm-amd" 
